@@ -11,7 +11,7 @@ namespace HousingOffersAPI.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         public double PriceInPLN { get; set; }
         public string Adress { get; set; }
