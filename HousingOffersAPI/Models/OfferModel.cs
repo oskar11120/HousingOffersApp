@@ -15,8 +15,8 @@ namespace HousingOffersAPI.Models
         public string[] ProperyTypes { get; set; }
         public string[] OfferTypes { get; set; }
         public string ActionType { get; set; }
-        public Dictionary<string, string> OfferTags { get; set; }
+        public IEnumerable<OfferTagModel> OfferTags { get; set; }
         public string Description { get; set; }
-        public string Images { get; set; }
+        public string[] ImagesAsBase64 { get; set; }
     }
 }
