@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HousingOffersAPI.Entities
 {
-    public class ImageAsBase64
+    public class ImageAdress
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

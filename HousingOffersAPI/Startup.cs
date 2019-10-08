@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HousingOffersAPI.Entities;
+using HousingOffersAPI.Services;
+using HousingOffersAPI.Services.UsersRelated;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,6 +33,9 @@ namespace HousingOffersAPI
 
             var connectionString = @"Server=(localdb)\mssqllocaldb;Database=HousingOffersDB;Trusted_Connection=True;";
             services.AddDbContext<HousingOffersContext>(o => o.UseSqlServer(connectionString));
+
+            services.AddScoped<IOffersRepozitory, OffersRepozitory>();
+            services.AddScoped<IUsersRepozitory, UsersRepozitory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

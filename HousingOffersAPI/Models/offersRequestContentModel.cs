@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace HousingOffersAPI.Models
 {
-    public class GetOffersRequestContentModel
+    public class offersRequestContentModel
     {
         public double[] PriceLimits { get; set; }
         public double[] AreaLimits { get; set; }
-        public string[] PropertuTypes { get; set; }
+        public string[] PropertyTypes { get; set; }
         public string[] OfferTypes { get; set; }
-        public string OfferId { get; set; }
-        public string UserId { get; set; }
+        public int? OfferId { get; set; }
+        public int? UserId { get; set; }
         public string Location { get; set; }
     }
 }

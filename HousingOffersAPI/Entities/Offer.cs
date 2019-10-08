@@ -26,6 +26,6 @@ namespace HousingOffersAPI.Entities
         public int UserId { get; set; }
 
         public ICollection<OfferTag> OfferTags { get; set; }
-        public ICollection<ImageAsBase64> Images { get; set; }
+        public ICollection<ImageAdress> Images { get; set; }
     }
 }
