@@ -48,7 +48,7 @@ namespace HousingOffersAPI.Services
             if (offersRequestContentModel.OfferTypes != null)
             {
                 query = query.Where(offer => offersRequestContentModel.OfferTypes
-                .Any(offerType => offerType == offer.PropertyType));
+                .Any(offerType => offerType == offer.OfferType));
             }
             if(offersRequestContentModel.DateTimeLimits != null)
             {
