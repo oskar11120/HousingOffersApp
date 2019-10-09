@@ -2,30 +2,51 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HousingOffersAPI.Models;
+using HousingOffersAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HousingOffersAPI.Controllers
 {
-    [Route("api/")]
+    [Route("api/offers/")]
     [ApiController]
     public class DataController : ControllerBase
     {
-        // returns offers for given getOffersInput
-        [HttpPost("getOffers")]
-        public void GetOffers([FromBody] string value)
+        public DataController(IOffersRepozitory repozitory)
         {
-            throw new NotImplementedException();
+            this.repozitory = repozitory;
+        }
+
+        private readonly IOffersRepozitory repozitory;
+
+        // returns offers for given getOffersInput
+        [HttpPost("get")]
+        public IActionResult GetOffers([FromBody] OffersRequestContentModel requestContentModel)
+        {
+            var offerEntities = repozitory.GetOffers(requestContentModel).ToList();
+            var output = repozitory.GetOffers(requestContentModel)
+                .Select(offerEntity => AutoMapper.Mapper.Map<Entities.Offer, Models.OfferModel>(offerEntity))
+                .ToList();
+            for (int i = 0; i < output.Count(); i++)
+            {
+                output[i].Images = offerEntities[i].Images
+                    .Select(imageEtity => AutoMapper.Mapper.Map<Entities.ImageAdress, Models.ImageAdressModel>(imageEtity));
+                output[i].OfferTags = offerEntities[i].OfferTags
+                    .Select(offerTagEntity => AutoMapper.Mapper.Map<Entities.OfferTag, Models.OfferTagModel>(offerTagEntity));
+            }
+            return Ok(output);
         }
 
         // adds new offer to database
-        [HttpPost("newOffer")]
-        public void AddOffer([FromBody] string createOfferInput)
+        [HttpPost("add")]
+        public void AddOffer([FromBody] OfferModel createOfferInput)
         {
-            throw new NotImplementedException();
+            createOfferInput.CreationDate = DateTime.Now;
+            repozitory.AddOffer(AutoMapper.Mapper.Map<Models.OfferModel, Entities.Offer>(createOfferInput));
         }
 
         // deletes off that correspons to given id
-        [HttpDelete("offerId")]
+        [HttpDelete("{offerId}")]
         public void DeleteOffer()
         {
             throw new NotImplementedException();

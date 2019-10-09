@@ -1,5 +1,6 @@
 ﻿using HousingOffersAPI.Entities;
 using HousingOffersAPI.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace HousingOffersAPI.Services
         
         private HousingOffersContext context;
 
-        public IEnumerable<Offer> GetOffers(offersRequestContentModel offersRequestContentModel)
+        public IEnumerable<Offer> GetOffers(OffersRequestContentModel offersRequestContentModel)
         {
             //TODO handle querying for location
             var query = context.Offers.Where(offer => true);
@@ -31,13 +32,13 @@ namespace HousingOffersAPI.Services
             }
             if (offersRequestContentModel.PriceLimits != null)
             {
-                query = query.Where(offer => offer.PriceInPLN > offersRequestContentModel.PriceLimits[0]
-                && offer.PriceInPLN < offersRequestContentModel.PriceLimits[1]);
+                query = query.Where(offer => offer.PriceInPLN >= offersRequestContentModel.PriceLimits[0]
+                && offer.PriceInPLN <= offersRequestContentModel.PriceLimits[1]);
             }                    
             if (offersRequestContentModel.AreaLimits != null)
             {
-                query = query.Where(offer => offer.Area > offersRequestContentModel.AreaLimits[0]
-                && offer.Area < offersRequestContentModel.AreaLimits[1]);
+                query = query.Where(offer => offer.Area >= offersRequestContentModel.AreaLimits[0]
+                && offer.Area <= offersRequestContentModel.AreaLimits[1]);
             }
             if(offersRequestContentModel.PropertyTypes != null)
             {
@@ -49,8 +50,21 @@ namespace HousingOffersAPI.Services
                 query = query.Where(offer => offersRequestContentModel.OfferTypes
                 .Any(offerType => offerType == offer.PropertyType));
             }
+            if(offersRequestContentModel.DateTimeLimits != null)
+            {
+                query = query.Where(offer => offer.CreationDate >= offersRequestContentModel.DateTimeLimits[0]
+                && offer.CreationDate <= offersRequestContentModel.DateTimeLimits[1]);
+            }
 
+            query = query
+                .Include(offer => offer.Images)
+                .Include(offer => offer.OfferTags);
             return query;
+        }
+
+        public void AddOffer(Offer offer)
+        {
+            context.Offers.Add(offer);
         }
     }
 }

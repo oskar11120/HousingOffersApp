@@ -22,5 +22,10 @@ namespace HousingOffersAPI.Services.UsersRelated
             (user.Login == userModel.Login || user.Email == userModel.Email) 
             && user.Password == userModel.Password);
         }
+
+        public void AddUser(UserModel user)
+        {
+            context.Users.Add(AutoMapper.Mapper.Map<Models.UserModel, Entities.User>(user));
+        }
     }
 }

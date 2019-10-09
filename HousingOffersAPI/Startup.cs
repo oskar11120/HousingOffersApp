@@ -14,6 +14,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using AutoMapper;
+using HousingOffersAPI.Validators;
 
 namespace HousingOffersAPI
 {
@@ -36,6 +38,8 @@ namespace HousingOffersAPI
 
             services.AddScoped<IOffersRepozitory, OffersRepozitory>();
             services.AddScoped<IUsersRepozitory, UsersRepozitory>();
+
+            services.AddSingleton<IUserCreationValidator, UserCreationValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +55,18 @@ namespace HousingOffersAPI
             }
 
             app.UseHttpsRedirection();
+
+            AutoMapper.Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Entities.Offer, Models.OfferModel>();
+                cfg.CreateMap<Entities.User, Models.UserModel>();
+                cfg.CreateMap<Models.UserModel, Entities.User>();
+                cfg.CreateMap<Entities.ImageAdress, Models.ImageAdressModel>();
+                cfg.CreateMap<Entities.OfferTag, Models.OfferTagModel>();
+                cfg.CreateMap<IEnumerable<Entities.ImageAdress>, IEnumerable<Models.ImageAdressModel>>();
+                cfg.CreateMap<IEnumerable<Entities.OfferTag>, IEnumerable<Models.OfferTagModel>>();
+            });
+
             app.UseMvc();
         }
     }

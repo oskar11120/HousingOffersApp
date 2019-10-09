@@ -6,6 +6,7 @@ namespace HousingOffersAPI.Services
 {
     public interface IOffersRepozitory
     {
-        IEnumerable<Offer> GetOffers(offersRequestContentModel offersRequestContentModel);
+        IEnumerable<Offer> GetOffers(OffersRequestContentModel offersRequestContentModel);
+        void AddOffer(Offer offer);
     }
 }

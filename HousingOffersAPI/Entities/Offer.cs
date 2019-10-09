@@ -17,15 +17,15 @@ namespace HousingOffersAPI.Entities
         public string Adress { get; set; }
         public double Area { get; set; }
         public string PropertyType { get; set; }
-        public string OfferType { get; set; }
-        public string ActionType { get; set; }        
+        public string OfferType { get; set; }       
         public string Description { get; set; }
+        public DateTime CreationDate { get; set; }
 
         [ForeignKey("UserId")]
         public User User { get; set; }
         public int UserId { get; set; }
 
-        public ICollection<OfferTag> OfferTags { get; set; }
-        public ICollection<ImageAdress> Images { get; set; }
+        public IEnumerable<OfferTag> OfferTags { get; set; }
+        public IEnumerable<ImageAdress> Images { get; set; }
     }
 }

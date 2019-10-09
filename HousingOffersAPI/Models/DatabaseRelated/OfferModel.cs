@@ -9,14 +9,17 @@ namespace HousingOffersAPI.Models
     {
         public string Id { get; set; }
         public string UserId { get; set; }
+
         public double PriceInPLN { get; set; }
         public string Adress { get; set; }
         public double Area { get; set; }
-        public string[] ProperyTypes { get; set; }
-        public string[] OfferTypes { get; set; }
-        public string ActionType { get; set; }
-        public IEnumerable<OfferTagModel> OfferTags { get; set; }
+        public string PropertyType { get; set; }
+        public string OfferType { get; set; }        
         public string Description { get; set; }
-        public string[] ImagesAsBase64 { get; set; }
+        public DateTime CreationDate { get; set; }
+
+        public IEnumerable<OfferTagModel> OfferTags { get; set; }
+        public IEnumerable<ImageAdressModel> Images { get; set; }
+
     }
 }

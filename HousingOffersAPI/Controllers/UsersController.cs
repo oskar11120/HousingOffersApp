@@ -3,21 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HousingOffersAPI.Models;
+using HousingOffersAPI.Services.UsersRelated;
 using HousingOffersAPI.Validators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HousingOffersAPI.Controllers
 {
-    [Route("api/")]
+    [Route("api/users/")]
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUserCreationValidator userCreationValidator; //TODO constructor injection
+        public UsersController(IUserCreationValidator userCreationValidator, IUsersRepozitory repozitory)
+        {
+            this.userCreationValidator = userCreationValidator;
+            this.repozitory = repozitory;
+        }
+
+        private readonly IUserCreationValidator userCreationValidator;
+        private readonly IUsersRepozitory repozitory;
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] UserModel user)
         {
+            if (repozitory.DoesUserExist(user))
+            {
+                ////TODO handle creation and sending of JWT
+            }
             throw new NotImplementedException();
         }
 
@@ -27,9 +39,9 @@ namespace HousingOffersAPI.Controllers
             if (!userCreationValidator.isValid(user)) return BadRequest("Invalid register credentials!");
             else
             {
-                //TODO adding user to database
+                repozitory.AddUser(user);
+                return Ok();
             }
-            throw new NotImplementedException();
         }
     }
 }

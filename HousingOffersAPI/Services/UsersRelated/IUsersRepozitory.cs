@@ -5,5 +5,6 @@ namespace HousingOffersAPI.Services.UsersRelated
     public interface IUsersRepozitory
     {
         bool DoesUserExist(UserModel userModel);
+        void AddUser(UserModel user);
     }
 }
