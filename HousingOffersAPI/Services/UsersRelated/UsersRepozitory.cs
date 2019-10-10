@@ -33,5 +33,20 @@ namespace HousingOffersAPI.Services.UsersRelated
             context.Users.Add(AutoMapper.Mapper.Map<Models.UserModel, Entities.User>(user));
             context.SaveChanges();
         }
+
+        public void DeleteUser(int userId)
+        {
+            var userToDelete = context.Users.SingleOrDefault(user => user.Id == userId);
+            if(userToDelete != null)
+            {
+                context.Users.Remove(userToDelete);
+                context.SaveChanges();
+            }
+        }
+
+        public void UpdateUser(UserModel user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

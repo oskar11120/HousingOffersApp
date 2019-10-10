@@ -46,9 +46,15 @@ namespace HousingOffersAPI.Controllers
 
         // deletes off that correspons to given id
         [HttpDelete("{offerId}")]
-        public void DeleteOffer()
+        public void DeleteOffer(int offerId)
         {
-            throw new NotImplementedException();
+            repozitory.DeleteOffer(offerId);
+        }
+
+        [HttpPost("update")]
+        public void UpdateOffer([FromBody] OfferModel offer)
+        {
+
         }
     }
 }

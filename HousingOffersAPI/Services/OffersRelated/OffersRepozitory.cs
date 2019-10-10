@@ -68,5 +68,17 @@ namespace HousingOffersAPI.Services
             context.Offers.Add(AutoMapper.Mapper.Map<Models.OfferModel, Entities.Offer>(offer));
             context.SaveChanges();
         }
+
+        public void DeleteOffer(int offerId)
+        {
+            var offerToDelete = context.Offers.SingleOrDefault(offer => offer.Id == offerId);
+            if (offerToDelete != null)
+            {
+                context.Offers.Remove(offerToDelete);
+                context.SaveChanges();
+            }
+                
+            
+        }
     }
 }

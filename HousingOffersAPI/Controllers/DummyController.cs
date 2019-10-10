@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HousingOffersAPI.Controllers
 {
-    [Route("api/initdatabase")]
+    [Route("api/")]
     [ApiController]
     public class DummyController : ControllerBase
     {
@@ -24,7 +24,7 @@ namespace HousingOffersAPI.Controllers
         private readonly IOffersRepozitory offersRepozitory;
         private readonly IUsersRepozitory usersRepozitory;
 
-        [HttpGet]
+        [HttpGet("initdatabase")]
         public IActionResult InitializeDatabase()
         {
             if (offersRepozitory.GetOffers(new OffersRequestContentModel()).ToList().Count() != 0)
@@ -166,5 +166,26 @@ namespace HousingOffersAPI.Controllers
                        
             return Ok();
         }
+
+        [HttpGet("resetdatabase")]
+        public IActionResult ResetDatabase()
+        {
+            var offers = offersRepozitory.GetOffers(new OffersRequestContentModel())
+                .ToList();
+            var offerIds = offers.Select(offer => offer.Id)
+                .ToList();
+            var userIds = offers.Select(offer => offer.UserId)
+                .ToList()
+                .GroupBy(userId => userId)
+                .Where(group => group.Count() == 1)
+                .Select(group => group.Key)
+                .ToList();
+
+            offerIds.ForEach(offerId => offersRepozitory.DeleteOffer(offerId));
+            userIds.ForEach(userId => usersRepozitory.DeleteUser(userId));
+
+            return InitializeDatabase();
+        }
+
     }
 }

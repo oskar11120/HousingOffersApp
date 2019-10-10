@@ -6,5 +6,7 @@ namespace HousingOffersAPI.Services.UsersRelated
     {
         int? GetUserID(UserModel userModel);
         void AddUser(UserModel user);
+        void DeleteUser(int userId);
+        void UpdateUser(UserModel user);
     }
 }
