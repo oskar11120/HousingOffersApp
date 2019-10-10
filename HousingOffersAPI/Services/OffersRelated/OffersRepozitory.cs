@@ -62,9 +62,11 @@ namespace HousingOffersAPI.Services
             return query;
         }
 
-        public void AddOffer(Offer offer)
+        public void AddOffer(OfferModel offer)
         {
-            context.Offers.Add(offer);
+            offer.CreationDate = DateTime.Now;
+            context.Offers.Add(AutoMapper.Mapper.Map<Models.OfferModel, Entities.Offer>(offer));
+            context.SaveChanges();
         }
     }
 }

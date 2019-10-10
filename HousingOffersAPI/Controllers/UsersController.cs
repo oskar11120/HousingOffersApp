@@ -26,7 +26,8 @@ namespace HousingOffersAPI.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] UserModel user)
         {
-            if (repozitory.DoesUserExist(user))
+            int? neededId = repozitory.GetUserID(user);
+            if(neededId != null)
             {
                 ////TODO handle creation and sending of JWT
             }

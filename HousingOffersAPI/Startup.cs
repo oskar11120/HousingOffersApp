@@ -60,11 +60,13 @@ namespace HousingOffersAPI
             {
                 cfg.CreateMap<Entities.Offer, Models.OfferModel>();
                 cfg.CreateMap<Entities.User, Models.UserModel>();
-                cfg.CreateMap<Models.UserModel, Entities.User>();
                 cfg.CreateMap<Entities.ImageAdress, Models.ImageAdressModel>();
                 cfg.CreateMap<Entities.OfferTag, Models.OfferTagModel>();
-                cfg.CreateMap<IEnumerable<Entities.ImageAdress>, IEnumerable<Models.ImageAdressModel>>();
-                cfg.CreateMap<IEnumerable<Entities.OfferTag>, IEnumerable<Models.OfferTagModel>>();
+
+                cfg.CreateMap<Models.OfferModel, Entities.Offer>();
+                cfg.CreateMap<Models.UserModel, Entities.User>();
+                cfg.CreateMap<Models.ImageAdressModel, Entities.ImageAdress>();
+                cfg.CreateMap<Models.OfferTagModel, Entities.OfferTag>();
             });
 
             app.UseMvc();

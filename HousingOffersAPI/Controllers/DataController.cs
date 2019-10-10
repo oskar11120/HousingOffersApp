@@ -41,8 +41,7 @@ namespace HousingOffersAPI.Controllers
         [HttpPost("add")]
         public void AddOffer([FromBody] OfferModel createOfferInput)
         {
-            createOfferInput.CreationDate = DateTime.Now;
-            repozitory.AddOffer(AutoMapper.Mapper.Map<Models.OfferModel, Entities.Offer>(createOfferInput));
+            repozitory.AddOffer(createOfferInput);
         }
 
         // deletes off that correspons to given id

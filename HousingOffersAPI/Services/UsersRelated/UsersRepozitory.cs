@@ -16,16 +16,22 @@ namespace HousingOffersAPI.Services.UsersRelated
 
         private HousingOffersContext context;
 
-        public bool DoesUserExist(UserModel userModel)
+        public int? GetUserID(UserModel userModel)
         {
-            return context.Users.Any(user => 
-            (user.Login == userModel.Login || user.Email == userModel.Email) 
+            var neededUser = context.Users.SingleOrDefault(user =>
+            (user.Login == userModel.Login || user.Email == userModel.Email)
             && user.Password == userModel.Password);
+
+            if (neededUser == null)
+                return null;
+            else
+                return neededUser.Id;
         }
 
         public void AddUser(UserModel user)
-        {
+        {           
             context.Users.Add(AutoMapper.Mapper.Map<Models.UserModel, Entities.User>(user));
+            context.SaveChanges();
         }
     }
 }
