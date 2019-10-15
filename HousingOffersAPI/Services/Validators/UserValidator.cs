@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace HousingOffersAPI.Validators
 {
-    public class UserCreationValidator : IUserCreationValidator
+    public class UserValidator : IUserValidator
     {
-        public bool isValid(UserModel user)
+        public bool IsNewUserValid(UserModel user)
         {
             //TODO validation for new user creation
             return true;

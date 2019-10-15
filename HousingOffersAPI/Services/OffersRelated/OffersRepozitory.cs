@@ -17,6 +17,18 @@ namespace HousingOffersAPI.Services
         
         private HousingOffersContext context;
 
+        public Offer GetOffer(int offerId)
+        {
+            var listWithNeededOffer = context.Offers.Where(offer => offer.Id == offerId)
+                .Include(offer => offer.Images)
+                .Include(offer => offer.OfferTags)
+                .ToList();
+            if (listWithNeededOffer.Count == 0)
+                return null;
+            else
+                return listWithNeededOffer[0];
+        }
+
         public IEnumerable<Offer> GetOffers(OffersRequestContentModel offersRequestContentModel)
         {
             //TODO handle querying for location

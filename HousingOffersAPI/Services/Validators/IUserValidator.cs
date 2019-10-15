@@ -2,8 +2,8 @@
 
 namespace HousingOffersAPI.Validators
 {
-    public interface IUserCreationValidator
+    public interface IUserValidator
     {
-        bool isValid(UserModel user);
+        bool IsNewUserValid(UserModel user);
     }
 }

@@ -16,6 +16,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using AutoMapper;
 using HousingOffersAPI.Validators;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using HousingOffersAPI.Services.Validators;
 
 namespace HousingOffersAPI
 {
@@ -39,7 +43,26 @@ namespace HousingOffersAPI
             services.AddScoped<IOffersRepozitory, OffersRepozitory>();
             services.AddScoped<IUsersRepozitory, UsersRepozitory>();
 
-            services.AddSingleton<IUserCreationValidator, UserCreationValidator>();
+            services.AddScoped<IJwtManager, JwtManager>();
+
+            services.AddSingleton<IUserValidator, UserValidator>();
+            
+
+            //security
+            var securityKey = "sample security key to be moved to appsettings";
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(securityKey))
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +76,8 @@ namespace HousingOffersAPI
             {
                 app.UseHsts();
             }
+
+            app.UseAuthentication();
 
             app.UseHttpsRedirection();
 

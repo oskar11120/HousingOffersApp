@@ -33,6 +33,10 @@ namespace HousingOffersAPI.Services.UsersRelated
             context.Users.Add(AutoMapper.Mapper.Map<Models.UserModel, Entities.User>(user));
             context.SaveChanges();
         }
+        public User GetUser(int userId)
+        {
+            return context.Users.SingleOrDefault(user => user.Id == userId);
+        }
 
         public void DeleteUser(int userId)
         {
@@ -44,14 +48,15 @@ namespace HousingOffersAPI.Services.UsersRelated
             }
         }
 
-        public void UpdateUser(UserModel user)
+        public void UpdateUser(UserModel user, int userId)
         {
-            var userToUpdate = context.Users.SingleOrDefault(userEntity => userEntity.Id == GetUserID(user));
+            var userToUpdate = context.Users.SingleOrDefault(userEntity => userEntity.Id == userId);
+
             if (userToUpdate == null) return;
 
             if (user.Login != null) userToUpdate.Login = user.Login;
             if (user.Password != null) userToUpdate.Password = user.Password;
-            if (user.PhoneNumber != null) userToUpdate.PhoneNumber = user.PhoneNumber;
+            if (user.PhoneNumber != null) userToUpdate.PhoneNumber = user.PhoneNumber;            
 
             context.SaveChanges();
         }
