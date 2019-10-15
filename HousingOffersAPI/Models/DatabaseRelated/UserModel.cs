@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 
 namespace HousingOffersAPI.Models
 {
+
+/// <summary>
+/// Podsumowanie testowe
+/// </summary>
     public class UserModel
     {
         public string Login { get; set; }
