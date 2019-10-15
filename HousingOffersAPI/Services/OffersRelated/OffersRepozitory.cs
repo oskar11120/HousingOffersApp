@@ -76,9 +76,62 @@ namespace HousingOffersAPI.Services
             {
                 context.Offers.Remove(offerToDelete);
                 context.SaveChanges();
+            }            
+        }
+
+        public void UpdateOffer(OfferModel offerUpdater)
+        {
+            var offerToUpdate = context.Offers.SingleOrDefault(offerEntity => offerEntity.Id == offerUpdater.Id);
+            if (offerToUpdate == null) return;
+
+            if (offerUpdater.OfferType != null) offerToUpdate.OfferType = offerUpdater.OfferType;
+            if (offerUpdater.PriceInPLN != 0) offerToUpdate.PriceInPLN = offerUpdater.PriceInPLN;
+            if (offerUpdater.PropertyType != null) offerToUpdate.PropertyType = offerUpdater.PropertyType;
+            if (offerUpdater.Adress != null) offerToUpdate.Adress = offerUpdater.Adress;
+            if (offerUpdater.Area != 0) offerToUpdate.Area = offerUpdater.Area;
+            if (offerUpdater.Description != null) offerToUpdate.Description = offerUpdater.Description;
+            if (offerUpdater.Images != null && offerUpdater.Images.Count() != 0)
+            {
+                foreach (var image in offerUpdater.Images)
+                {
+                    var referenceImageEntity = offerToUpdate.Images.SingleOrDefault(imageEntity => imageEntity.Id == image.Id);
+                    if(referenceImageEntity != null)
+                    {
+                        offerToUpdate.Images.ToList().Add(new ImageAdress()
+                        {
+                            Value = image.Value 
+                        });
+                    }
+                    else
+                    {
+                        if(image.Value != null)
+                            referenceImageEntity.Value = image.Value;
+                    }
+                }                
             }
-                
-            
+            if(offerUpdater.OfferTags != null && offerUpdater.OfferTags.Count() != 0)
+            {
+                foreach(var offerTagUpdater in offerUpdater.OfferTags)
+                {
+                    ///TODO do not allow for two offer tags of the same name
+                    var referenceOfferEntity = offerToUpdate.OfferTags.SingleOrDefault(offerTagEntity => offerTagEntity.Name == offerTagUpdater.Name);
+                    if(referenceOfferEntity != null)
+                    {
+                        offerToUpdate.OfferTags.ToList().Add(new OfferTag() { Name = offerTagUpdater.Name, Value = offerTagUpdater.Value });
+                    }
+                    else
+                    {
+                        if (offerTagUpdater.Name != null)
+                            referenceOfferEntity.Name = offerTagUpdater.Name;
+                        if(offerTagUpdater.Value != null)
+                        {
+                            referenceOfferEntity.Value = offerTagUpdater.Value;
+                        }
+                    }
+                }
+            }
+
+            context.SaveChanges();
         }
     }
 }

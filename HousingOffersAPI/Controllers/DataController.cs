@@ -48,13 +48,19 @@ namespace HousingOffersAPI.Controllers
         [HttpDelete("{offerId}")]
         public void DeleteOffer(int offerId)
         {
-            repozitory.DeleteOffer(offerId);
+            //TODO validation
+            bool valid = true;
+            if(valid)
+                repozitory.DeleteOffer(offerId);
         }
 
-        [HttpPost("update")]
+        [HttpPatch("update")]
         public void UpdateOffer([FromBody] OfferModel offer)
         {
-
+            //TODO request validation
+            bool valid = true;
+            if (valid)
+                repozitory.UpdateOffer(offer);
         }
     }
 }

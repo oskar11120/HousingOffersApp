@@ -46,7 +46,14 @@ namespace HousingOffersAPI.Services.UsersRelated
 
         public void UpdateUser(UserModel user)
         {
-            throw new NotImplementedException();
+            var userToUpdate = context.Users.SingleOrDefault(userEntity => userEntity.Id == GetUserID(user));
+            if (userToUpdate == null) return;
+
+            if (user.Login != null) userToUpdate.Login = user.Login;
+            if (user.Password != null) userToUpdate.Password = user.Password;
+            if (user.PhoneNumber != null) userToUpdate.PhoneNumber = user.PhoneNumber;
+
+            context.SaveChanges();
         }
     }
 }

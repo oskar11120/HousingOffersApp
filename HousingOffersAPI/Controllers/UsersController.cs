@@ -27,7 +27,7 @@ namespace HousingOffersAPI.Controllers
         public IActionResult Login([FromBody] UserModel user)
         {
             int? neededId = repozitory.GetUserID(user);
-            if(neededId != null)
+            if (neededId != null)
             {
                 ////TODO handle creation and sending of JWT
             }
@@ -42,6 +42,35 @@ namespace HousingOffersAPI.Controllers
             {
                 repozitory.AddUser(user);
                 return Ok();
+            }
+        }
+
+        [HttpPatch("update")]
+        public IActionResult Update([FromBody] UserModel user)
+        {
+            ///TODO add user validation
+            bool valid = true;
+
+            if (valid)
+            {
+                repozitory.UpdateUser(user);
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpDelete("{userId}")]
+        public IActionResult Delete(int userId)
+        {
+            //TODO add request validation
+            bool valid = true;
+
+            if(valid)
+            {
+                repozitory.DeleteUser(userId);   
             }
         }
     }

@@ -9,5 +9,6 @@ namespace HousingOffersAPI.Services
         IEnumerable<Offer> GetOffers(OffersRequestContentModel offersRequestContentModel);
         void AddOffer(OfferModel offer);
         void DeleteOffer(int offerId);
+        void UpdateOffer(OfferModel offerUpdater);
     }
 }
