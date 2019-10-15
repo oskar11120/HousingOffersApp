@@ -22,6 +22,7 @@ namespace HousingOffersAPI.Services
             var listWithNeededOffer = context.Offers.Where(offer => offer.Id == offerId)
                 .Include(offer => offer.Images)
                 .Include(offer => offer.OfferTags)
+                .Include(offer => offer.User)
                 .ToList();
             if (listWithNeededOffer.Count == 0)
                 return null;
@@ -70,7 +71,8 @@ namespace HousingOffersAPI.Services
 
             query = query
                 .Include(offer => offer.Images)
-                .Include(offer => offer.OfferTags);
+                .Include(offer => offer.OfferTags)
+                .Include(offer => offer.User);
             return query;
         }
 

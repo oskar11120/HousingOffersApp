@@ -33,6 +33,7 @@ namespace HousingOffersAPI.Controllers
             if (outputOffer == null)
                 return BadRequest("No such offer!");
             else
+                outputOffer.User.Password = "";
                 return Ok(AutoMapper.Mapper.Map<Entities.Offer, Models.OfferModel>(outputOffer));
         }
 
@@ -50,6 +51,7 @@ namespace HousingOffersAPI.Controllers
                     .Select(imageEtity => AutoMapper.Mapper.Map<Entities.ImageAdress, Models.ImageAdressModel>(imageEtity));
                 output[i].OfferTags = offerEntities[i].OfferTags
                     .Select(offerTagEntity => AutoMapper.Mapper.Map<Entities.OfferTag, Models.OfferTagModel>(offerTagEntity));
+                output[i].User.Password = null;
             }
             return Ok(output);
         }

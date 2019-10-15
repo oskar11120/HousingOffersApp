@@ -10,6 +10,7 @@ namespace HousingOffersAPI.Models
         public int Id { get; set; }
         public int UserId { get; set; }
 
+        public UserModel User { get; set; }
         public double PriceInPLN { get; set; }
         public string Adress { get; set; }
         public double Area { get; set; }
