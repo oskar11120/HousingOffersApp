@@ -11,12 +11,14 @@ namespace HousingOffersAPI.Services.Validators
 {
     public class JwtManager : IJwtManager
     {
-        public JwtManager(IOffersRepozitory repozitory)
+        public JwtManager(IOffersRepozitory repozitory, Microsoft.Extensions.Options.IOptions<List<string>> options)
         {
             this.repozitory = repozitory;
+            this.securityKey = options.Value[0];
         }
 
         private readonly IOffersRepozitory repozitory;
+        private readonly string securityKey;
 
         public bool IsClaimValidToRequestedUserId(int requestedUserId, Claim[] claims)
         {
@@ -34,7 +36,7 @@ namespace HousingOffersAPI.Services.Validators
                     new Claim("UserId", userId.ToString())
                 };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("sample security key to be moved to appsettings"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(

@@ -37,8 +37,7 @@ namespace HousingOffersAPI
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            var connectionString = @"Server=(localdb)\mssqllocaldb;Database=HousingOffersDB;Trusted_Connection=True;";
-            services.AddDbContext<HousingOffersContext>(o => o.UseSqlServer(connectionString));
+            services.AddDbContext<HousingOffersContext>(o => o.UseSqlServer(Configuration["ConnectionStrings:HousingOffersDB"]));
 
             services.AddScoped<IOffersRepozitory, OffersRepozitory>();
             services.AddScoped<IUsersRepozitory, UsersRepozitory>();
@@ -46,10 +45,10 @@ namespace HousingOffersAPI
             services.AddScoped<IJwtManager, JwtManager>();
 
             services.AddSingleton<IUserValidator, UserValidator>();
-            
+
+            services.Configure<List<string>>(Configuration.GetSection("SecurityKeys"));
 
             //security
-            var securityKey = "sample security key to be moved to appsettings";
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -60,7 +59,7 @@ namespace HousingOffersAPI
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(securityKey))
+                        Encoding.UTF8.GetBytes(Configuration["SecurityKeys:0"]))
                 };
             });
         }

@@ -60,6 +60,7 @@ namespace HousingOffersAPI.Controllers
         [HttpPost("add")]
         public IActionResult AddOffer([FromBody] OfferModel createOfferInput)
         {
+            createOfferInput.User = null;
             createOfferInput.UserId = jwtManager.getClaimedUserId(User.Claims.ToArray());
 
             repozitory.AddOffer(createOfferInput);
