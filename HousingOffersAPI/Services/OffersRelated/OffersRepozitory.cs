@@ -101,7 +101,15 @@ namespace HousingOffersAPI.Services
             if (offerUpdater.OfferType != null) offerToUpdate.OfferType = offerUpdater.OfferType;
             if (offerUpdater.PriceInPLN != 0) offerToUpdate.PriceInPLN = offerUpdater.PriceInPLN;
             if (offerUpdater.PropertyType != null) offerToUpdate.PropertyType = offerUpdater.PropertyType;
-            if (offerUpdater.Adress != null) offerToUpdate.Adress = offerUpdater.Adress;
+            if (offerUpdater.Location != null)
+            {
+                if (offerUpdater.Location.Lattitue != 0)
+                    offerToUpdate.Location.Lattitue = offerUpdater.Location.Lattitue;
+                if (offerUpdater.Location.Longitude != 0)
+                    offerToUpdate.Location.Longitude = offerUpdater.Location.Longitude;
+                if (offerUpdater.Location.Description != null)
+                    offerToUpdate.Location.Description = offerToUpdate.Location.Description;
+            } 
             if (offerUpdater.Area != 0) offerToUpdate.Area = offerUpdater.Area;
             if (offerUpdater.Description != null) offerToUpdate.Description = offerUpdater.Description;
             if (offerUpdater.Images != null && offerUpdater.Images.Count() != 0)

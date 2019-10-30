@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HousingOffersAPI.Models.DatabaseRelated;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace HousingOffersAPI.Models
 
         public UserModel User { get; set; }
         public double PriceInPLN { get; set; }
-        public string Adress { get; set; }
+        public LocationModel Location { get; set; }
         public double Area { get; set; }
         public string PropertyType { get; set; }
         public string OfferType { get; set; }        

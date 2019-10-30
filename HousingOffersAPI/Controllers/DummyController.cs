@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HousingOffersAPI.Entities;
 using HousingOffersAPI.Models;
+using HousingOffersAPI.Models.DatabaseRelated;
 using HousingOffersAPI.Services;
 using HousingOffersAPI.Services.UsersRelated;
 using Microsoft.AspNetCore.Http;
@@ -62,7 +63,12 @@ namespace HousingOffersAPI.Controllers
                 new OfferModel()
                 {
                     UserId = userIds[0],
-                    Adress = "budryka 5 budapeszt",
+                    Location = new LocationModel()
+                    {
+                        Lattitue = 5,
+                        Longitude = 10,
+                        Description = "budryka 5 budapeszt"
+                    },
                     Area = 50,
                     Description = "asdasdasdasdasd",
                     Images = new List<ImageAdressModel>()
@@ -96,7 +102,12 @@ namespace HousingOffersAPI.Controllers
                 new OfferModel()
                 {
                     UserId = userIds[1],
-                    Adress = "adress for user 2",
+                    Location = new LocationModel()
+                    {
+                        Lattitue = 7,
+                        Longitude = 10,
+                        Description = "adress for user 2"
+                    },
                     Area = 100.5,
                     Description = "desc for user 2",
                     Images = new List<ImageAdressModel>()
@@ -130,7 +141,12 @@ namespace HousingOffersAPI.Controllers
                 new OfferModel()
                 {
                     UserId = userIds[2],
-                    Adress = "adress for user 3",
+                    Location = new LocationModel()
+                    {
+                        Lattitue = 5,
+                        Longitude = 5,
+                        Description = "adress for user 3"
+                    },
                     Area = 10,
                     Description = "zxzzzxczxczxc",
                     Images = new List<ImageAdressModel>()

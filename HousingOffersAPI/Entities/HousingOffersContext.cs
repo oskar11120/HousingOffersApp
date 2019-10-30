@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HousingOffersAPI.Models.DatabaseRelated;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,6 @@ namespace HousingOffersAPI.Entities
 
         public DbSet<Offer> Offers { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Location> Locations { get; set; }
     }
 }

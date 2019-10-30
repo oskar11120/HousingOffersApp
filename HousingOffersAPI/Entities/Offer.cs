@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HousingOffersAPI.Models.DatabaseRelated;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,7 +15,7 @@ namespace HousingOffersAPI.Entities
         public int Id { get; set; }
 
         public double PriceInPLN { get; set; }
-        public string Adress { get; set; }
+        public Location Location { get; set; }
         public double Area { get; set; }
         public string PropertyType { get; set; }
         public string OfferType { get; set; }       
