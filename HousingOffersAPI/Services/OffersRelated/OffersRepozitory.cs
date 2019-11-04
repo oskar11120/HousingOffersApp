@@ -1,5 +1,8 @@
-﻿using HousingOffersAPI.Entities;
+﻿using Geolocation;
+using HousingOffersAPI.Entities;
 using HousingOffersAPI.Models;
+using HousingOffersAPI.Models.DatabaseRelated;
+using HousingOffersAPI.Utils;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -30,7 +33,7 @@ namespace HousingOffersAPI.Services
                 return listWithNeededOffer[0];
         }
 
-        public IEnumerable<Offer> GetOffers(OffersRequestContentModel offersRequestContentModel)
+        public List<Offer> GetOffers(OffersRequestContentModel offersRequestContentModel)
         {
             //TODO handle querying for location
             var query = context.Offers.Where(offer => true);
@@ -69,11 +72,22 @@ namespace HousingOffersAPI.Services
                 && offer.CreationDate <= offersRequestContentModel.DateTimeLimits[1]);
             }
 
+            //including objects nested in offers
             query = query
                 .Include(offer => offer.Images)
                 .Include(offer => offer.OfferTags)
-                .Include(offer => offer.User);
-            return query;
+                .Include(offer => offer.User)
+                .Include(offer => offer.Location);
+
+            List<Offer> offersOutput = query.ToList();
+
+            //query against locations
+            if (offersRequestContentModel.Location != null && offersRequestContentModel.MaxDistanceFromLocation > 0)
+            {
+                offersOutput = getOfferWithinSpecifiedDistance(offersRequestContentModel.Location, offersRequestContentModel.MaxDistanceFromLocation, offersOutput)
+                    .ToList();
+            }
+            return offersOutput;
         }
 
         public void AddOffer(OfferModel offer)
@@ -154,6 +168,27 @@ namespace HousingOffersAPI.Services
             }
 
             context.SaveChanges();
+        }
+
+        private IEnumerable<Offer> getOfferWithinSpecifiedDistance(LocationModel referenceLocation, double maxDistance, List<Offer> offers)
+        {
+            var referencePoint = new Coordinate()
+            {
+                Latitude = referenceLocation.Lattitue,
+                Longitude = referenceLocation.Longitude
+            };
+
+            return offers.Where(offer =>
+            {
+                var location = offer.Location;
+                double distance = GeoCalculator.GetDistance(referencePoint, new Coordinate()
+                {
+                    Latitude = offer.Location.Lattitue,
+                    Longitude = offer.Location.Longitude
+                });
+
+                return distance < maxDistance;
+            });
         }
     }
 }

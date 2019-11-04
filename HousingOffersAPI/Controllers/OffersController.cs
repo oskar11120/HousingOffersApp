@@ -47,10 +47,10 @@ namespace HousingOffersAPI.Controllers
                 .ToList();
             for (int i = 0; i < output.Count(); i++)
             {
-                output[i].Images = offerEntities[i].Images
-                    .Select(imageEtity => AutoMapper.Mapper.Map<Entities.ImageAdress, Models.ImageAdressModel>(imageEtity));
-                output[i].OfferTags = offerEntities[i].OfferTags
-                    .Select(offerTagEntity => AutoMapper.Mapper.Map<Entities.OfferTag, Models.OfferTagModel>(offerTagEntity));
+                //output[i].Images = offerEntities[i].Images
+                //    .Select(imageEtity => AutoMapper.Mapper.Map<Entities.ImageAdress, Models.ImageAdressModel>(imageEtity));
+                //output[i].OfferTags = offerEntities[i].OfferTags
+                //    .Select(offerTagEntity => AutoMapper.Mapper.Map<Entities.OfferTag, Models.OfferTagModel>(offerTagEntity));
                 output[i].User.Password = null;
             }
             return Ok(output);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HousingOffersAPI.Models.DatabaseRelated;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace HousingOffersAPI.Models
         public string[] OfferTypes { get; set; }
         public int? OfferId { get; set; }
         public int? UserId { get; set; }
-        public string Location { get; set; }
+        public LocationModel Location { get; set; }
+        public double MaxDistanceFromLocation { get; set; }
     }
 }
