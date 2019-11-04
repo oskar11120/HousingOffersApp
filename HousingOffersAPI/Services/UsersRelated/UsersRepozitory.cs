@@ -19,7 +19,7 @@ namespace HousingOffersAPI.Services.UsersRelated
         public int? GetUserID(UserModel userModel)
         {
             var neededUser = context.Users.SingleOrDefault(user =>
-            (user.Login == userModel.Login || user.Email == userModel.Email)
+            (user.Login == userModel.Login || user.Email == userModel.Email || user.PhoneNumber == userModel.PhoneNumber)
             && user.Password == userModel.Password);
 
             if (neededUser == null)
@@ -36,7 +36,8 @@ namespace HousingOffersAPI.Services.UsersRelated
         public User GetUser(int userId)
         {
             var neededUser = context.Users.SingleOrDefault(user => user.Id == userId);
-            neededUser.Password = null;
+            if(neededUser != null)
+                neededUser.Password = null;
             return neededUser;
         }
 

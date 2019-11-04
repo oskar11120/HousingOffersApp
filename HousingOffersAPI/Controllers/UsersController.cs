@@ -60,6 +60,7 @@ namespace HousingOffersAPI.Controllers
                 return Ok();
         }
 
+        [AllowAnonymous]
         [HttpGet("{userId}")]
         public IActionResult Get(int userId)
         {
@@ -82,7 +83,8 @@ namespace HousingOffersAPI.Controllers
             {
                 Email = userUpdateContent.Email,
                 Login = userUpdateContent.Login,
-                Password = userUpdateContent.Password
+                Password = userUpdateContent.Password,
+                PhoneNumber = userUpdateContent.PhoneNumber
             });
 
             if (userId == null)
@@ -99,13 +101,11 @@ namespace HousingOffersAPI.Controllers
             return Ok();         
         }
 
-        [HttpDelete("{userId}")]
-        public IActionResult Delete(int userId)
+        [HttpDelete("delete")]
+        public IActionResult Delete()
         {
             //TODO add request validation
-            if (!jwtManager.IsClaimValidToRequestedUserId((int)userId, User.Claims.ToArray()))
-                return Unauthorized();
-
+            int userId = jwtManager.GetClaimedUserId(User.Claims.ToArray());
             repozitory.DeleteUser(userId);
             return Ok();
         }
