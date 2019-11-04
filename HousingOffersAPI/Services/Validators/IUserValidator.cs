@@ -4,6 +4,7 @@ namespace HousingOffersAPI.Validators
 {
     public interface IUserValidator
     {
-        bool IsNewUserValid(UserModel user);
+        //returns error message if error appears and null if there is no error
+        string IsUserValid(UserModel user);
     }
 }

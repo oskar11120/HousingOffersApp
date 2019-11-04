@@ -16,6 +16,6 @@ namespace HousingOffersAPI.Models
         public int? OfferId { get; set; }
         public int? UserId { get; set; }
         public LocationModel Location { get; set; }
-        public double MaxDistanceFromLocation { get; set; }
+        public double? MaxDistanceFromLocation { get; set; }
     }
 }

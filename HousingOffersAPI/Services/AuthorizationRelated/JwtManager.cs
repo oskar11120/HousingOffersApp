@@ -5,13 +5,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
 namespace HousingOffersAPI.Services.Validators
 {
     public class JwtManager : IJwtManager
     {
-        public JwtManager(IOffersRepozitory repozitory, Microsoft.Extensions.Options.IOptions<List<string>> options)
+        public JwtManager(IOffersRepozitory repozitory, IOptions<List<string>> options)
         {
             this.repozitory = repozitory;
             this.securityKey = options.Value[0];
@@ -22,9 +22,9 @@ namespace HousingOffersAPI.Services.Validators
 
         public bool IsClaimValidToRequestedUserId(int requestedUserId, Claim[] claims)
         {
-            return getClaimedUserId(claims) == requestedUserId;
+            return GetClaimedUserId(claims) == requestedUserId;
         }
-        public int getClaimedUserId(Claim[] claims)
+        public int GetClaimedUserId(Claim[] claims)
         {
            return int.Parse(claims.Single(claim => claim.Type == "UserId").Value);
         }

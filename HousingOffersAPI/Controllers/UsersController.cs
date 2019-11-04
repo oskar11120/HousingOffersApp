@@ -21,14 +21,14 @@ namespace HousingOffersAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        public UsersController(IUserValidator userCreationValidator, IUsersRepozitory repozitory, IJwtManager jwtManager)
+        public UsersController(IUserValidator userValidator, IUsersRepozitory repozitory, IJwtManager jwtManager)
         {
-            this.userCreationValidator = userCreationValidator;
+            this.userValidator = userValidator;
             this.repozitory = repozitory;
             this.jwtManager = jwtManager;
         }
 
-        private readonly IUserValidator userCreationValidator;
+        private readonly IUserValidator userValidator;
         private readonly IUsersRepozitory repozitory;
         private readonly IJwtManager jwtManager;
 
@@ -52,12 +52,12 @@ namespace HousingOffersAPI.Controllers
         [HttpPost("register")]
         public IActionResult Register([FromBody] UserModel user)
         {
-            if (!userCreationValidator.IsNewUserValid(user)) return BadRequest("Invalid register credentials!");
-            else
-            {
+            var error = userValidator.IsUserValid(user);
+            if (error != null)
+                return BadRequest(error);
+
                 repozitory.AddUser(user);
                 return Ok();
-            }
         }
 
         [HttpGet("{userId}")]

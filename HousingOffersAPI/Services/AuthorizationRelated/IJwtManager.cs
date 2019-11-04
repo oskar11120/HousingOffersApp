@@ -7,7 +7,7 @@ namespace HousingOffersAPI.Services.Validators
     {
         bool IsClaimValidToRequestedUserId(int requestedUserId, Claim[] claims);
         bool IsClaimValidToRequestedOfferId(int requestedOfferId, Claim[] claims);
-        int getClaimedUserId(Claim[] claims);
+        int GetClaimedUserId(Claim[] claims);
         JwtSecurityToken CreateJWT(int userId);
     }
 }

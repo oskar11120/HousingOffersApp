@@ -8,10 +8,10 @@ namespace HousingOffersAPI.Validators
 {
     public class UserValidator : IUserValidator
     {
-        public bool IsNewUserValid(UserModel user)
+        public string IsUserValid(UserModel user)
         {
             //TODO validation for new user creation
-            return true;
+            return null;
         }
     }
 }

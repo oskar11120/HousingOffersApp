@@ -2,12 +2,10 @@
 using HousingOffersAPI.Entities;
 using HousingOffersAPI.Models;
 using HousingOffersAPI.Models.DatabaseRelated;
-using HousingOffersAPI.Utils;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace HousingOffersAPI.Services
 {    
@@ -166,11 +164,10 @@ namespace HousingOffersAPI.Services
                     }
                 }
             }
-
             context.SaveChanges();
         }
 
-        private IEnumerable<Offer> getOfferWithinSpecifiedDistance(LocationModel referenceLocation, double maxDistance, List<Offer> offers)
+        private IEnumerable<Offer> getOfferWithinSpecifiedDistance(LocationModel referenceLocation, double? maxDistance, List<Offer> offers)
         {
             var referencePoint = new Coordinate()
             {

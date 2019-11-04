@@ -15,14 +15,16 @@ namespace HousingOffersAPI.Controllers
     [ApiController]
     public class OffersController : ControllerBase
     {
-        public OffersController(IOffersRepozitory repozitory, IJwtManager jwtManager)
+        public OffersController(IOffersRepozitory repozitory, IJwtManager jwtManager, IOfferValidator offerValidator)
         {
             this.repozitory = repozitory;
             this.jwtManager = jwtManager;
+            this.offerValidator = offerValidator;
         }
 
         private readonly IOffersRepozitory repozitory;
         private readonly IJwtManager jwtManager;
+        private readonly IOfferValidator offerValidator;
 
         // returns offers for given getOffersInput
         [AllowAnonymous]
@@ -60,8 +62,12 @@ namespace HousingOffersAPI.Controllers
         [HttpPost("add")]
         public IActionResult AddOffer([FromBody] OfferModel createOfferInput)
         {
+            var error = offerValidator.IsOfferValid(createOfferInput);
+            if (error != null)
+                return BadRequest(error);
+
             createOfferInput.User = null;
-            createOfferInput.UserId = jwtManager.getClaimedUserId(User.Claims.ToArray());
+            createOfferInput.UserId = jwtManager.GetClaimedUserId(User.Claims.ToArray());
 
             repozitory.AddOffer(createOfferInput);
             return Ok();
