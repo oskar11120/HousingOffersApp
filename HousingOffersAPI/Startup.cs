@@ -46,6 +46,7 @@ namespace HousingOffersAPI
 
             services.AddSingleton<IUserValidator, UserValidator>();
             services.AddSingleton<IOfferValidator, OfferValidator>();
+            services.AddSingleton<IOfferGetRequestValidator, OfferGetRequestValidator>();
 
             services.Configure<List<string>>(Configuration.GetSection("SecurityKeys"));
             services.Configure<Dictionary<string, List<string>>>(Configuration.GetSection("AllowedValues"));

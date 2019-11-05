@@ -15,16 +15,18 @@ namespace HousingOffersAPI.Controllers
     [ApiController]
     public class OffersController : ControllerBase
     {
-        public OffersController(IOffersRepozitory repozitory, IJwtManager jwtManager, IOfferValidator offerValidator)
+        public OffersController(IOffersRepozitory repozitory, IJwtManager jwtManager, IOfferValidator offerValidator, IOfferGetRequestValidator offerGetRequestValidator)
         {
             this.repozitory = repozitory;
             this.jwtManager = jwtManager;
             this.offerValidator = offerValidator;
+            this.offerGetRequestValidator = offerGetRequestValidator;
         }
 
         private readonly IOffersRepozitory repozitory;
         private readonly IJwtManager jwtManager;
         private readonly IOfferValidator offerValidator;
+        private readonly IOfferGetRequestValidator offerGetRequestValidator;
 
         // returns offers for given getOffersInput
         [AllowAnonymous]
@@ -36,23 +38,24 @@ namespace HousingOffersAPI.Controllers
                 return BadRequest("No such offer!");
             else
                 outputOffer.User.Password = "";
-                return Ok(AutoMapper.Mapper.Map<Entities.Offer, Models.OfferModel>(outputOffer));
+
+            return Ok(AutoMapper.Mapper.Map<Entities.Offer, Models.OfferModel>(outputOffer));
         }
 
         [AllowAnonymous]
         [HttpPost("get")]
         public IActionResult GetOffers([FromBody] OffersRequestContentModel requestContentModel)
         {
+            var error = offerGetRequestValidator.IsRequestValid(requestContentModel);
+            if (error != null)
+                return BadRequest(error);
+
             var offerEntities = repozitory.GetOffers(requestContentModel).ToList();
             var output = repozitory.GetOffers(requestContentModel)
                 .Select(offerEntity => AutoMapper.Mapper.Map<Entities.Offer, Models.OfferModel>(offerEntity))
                 .ToList();
             for (int i = 0; i < output.Count(); i++)
             {
-                //output[i].Images = offerEntities[i].Images
-                //    .Select(imageEtity => AutoMapper.Mapper.Map<Entities.ImageAdress, Models.ImageAdressModel>(imageEtity));
-                //output[i].OfferTags = offerEntities[i].OfferTags
-                //    .Select(offerTagEntity => AutoMapper.Mapper.Map<Entities.OfferTag, Models.OfferTagModel>(offerTagEntity));
                 output[i].User.Password = null;
             }
             return Ok(output);
@@ -73,7 +76,7 @@ namespace HousingOffersAPI.Controllers
             return Ok();
         }
 
-        // deletes off that correspons to given id
+        // deletes offert that correspons to given id
         [HttpDelete("{offerId}")]
         public IActionResult DeleteOffer(int offerId)
         {
@@ -94,7 +97,6 @@ namespace HousingOffersAPI.Controllers
             //TODO request validation
             repozitory.UpdateOffer(offer);
             return Ok();
-
         }
     }
 }
