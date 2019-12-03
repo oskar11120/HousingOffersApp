@@ -70,7 +70,7 @@ namespace HousingOffersAPI.Controllers
                 return BadRequest(error);
 
             createOfferInput.User = null;
-            createOfferInput.UserId = jwtManager.GetClaimedUserId(User.Claims.ToArray());
+            createOfferInput.UserId = jwtManager.GetClaimOfType(User.Claims.ToArray(), "UserId");
 
             repozitory.AddOffer(createOfferInput);
             return Ok();

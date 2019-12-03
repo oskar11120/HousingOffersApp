@@ -79,24 +79,14 @@ namespace HousingOffersAPI.Controllers
         public IActionResult Update([FromBody] UserUpdateRequestContentModel userUpdateContent)
         {
             ///TODO add user validation
-            int? userId = repozitory.GetUserID(new UserModel()
-            {
-                Email = userUpdateContent.Email,
-                Login = userUpdateContent.Login,
-                Password = userUpdateContent.Password,
-                PhoneNumber = userUpdateContent.PhoneNumber
-            });
 
-            if (userId == null)
-                return BadRequest("User not found!");
-            if(!jwtManager.IsClaimValidToRequestedUserId((int)userId, User.Claims.ToArray()))
-                return Unauthorized();
+            int userId = jwtManager.GetClaimOfType(User.Claims.ToArray(), "UserId");
 
             repozitory.UpdateUser(new UserModel()
             {
-                Login = userUpdateContent.LoginNew,
-                Password = userUpdateContent.PasswordNew,
-                PhoneNumber = userUpdateContent.PhoneNumberNew
+                Login = userUpdateContent.Login,
+                Password = userUpdateContent.Password,
+                PhoneNumber = userUpdateContent.PhoneNumber
             }, (int)userId);
             return Ok();         
         }
@@ -105,7 +95,7 @@ namespace HousingOffersAPI.Controllers
         public IActionResult Delete()
         {
             //TODO add request validation
-            int userId = jwtManager.GetClaimedUserId(User.Claims.ToArray());
+            int userId = jwtManager.GetClaimOfType(User.Claims.ToArray(), "UserId");
             repozitory.DeleteUser(userId);
             return Ok();
         }

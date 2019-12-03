@@ -22,11 +22,11 @@ namespace HousingOffersAPI.Services.Validators
 
         public bool IsClaimValidToRequestedUserId(int requestedUserId, Claim[] claims)
         {
-            return GetClaimedUserId(claims) == requestedUserId;
+            return GetClaimOfType(claims, "UserId") == requestedUserId;
         }
-        public int GetClaimedUserId(Claim[] claims)
+        public int GetClaimOfType(Claim[] claims, string type)
         {
-           return int.Parse(claims.Single(claim => claim.Type == "UserId").Value);
+           return int.Parse(claims.Single(claim => claim.Type == type).Value);
         }
 
         public JwtSecurityToken CreateJWT(int userId)
