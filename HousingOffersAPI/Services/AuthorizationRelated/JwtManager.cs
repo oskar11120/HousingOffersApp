@@ -6,15 +6,16 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
+using HousingOffersAPI.Options;
 
 namespace HousingOffersAPI.Services.Validators
 {
     public class JwtManager : IJwtManager
     {
-        public JwtManager(IOffersRepozitory repozitory, IOptions<List<string>> options)
+        public JwtManager(IOffersRepozitory repozitory, IOptions<ApiOptions> options)
         {
             this.repozitory = repozitory;
-            this.securityKey = options.Value[0];
+            this.securityKey = options.Value.UsersControllerOptions.SecurityKeys["JWT"];
         }
 
         private readonly IOffersRepozitory repozitory;

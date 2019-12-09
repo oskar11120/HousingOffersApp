@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using HousingOffersAPI.Services.Validators;
+using HousingOffersAPI.Options;
 
 namespace HousingOffersAPI
 {
@@ -37,7 +38,7 @@ namespace HousingOffersAPI
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddDbContext<HousingOffersContext>(o => o.UseSqlServer(Configuration["ConnectionStrings:HousingOffersDB"]));
+            services.AddDbContext<HousingOffersContext>(o => o.UseSqlServer(Configuration["ApiOptions:ConnectionStrings:HousingOffersDB"]));
 
             services.AddScoped<IOffersRepozitory, OffersRepozitory>();
             services.AddScoped<IUsersRepozitory, UsersRepozitory>();
@@ -48,8 +49,10 @@ namespace HousingOffersAPI
             services.AddScoped<IOfferValidator, OfferValidator>();
             services.AddScoped<IOfferGetRequestValidator, OfferGetRequestValidator>();
 
-            services.Configure<List<string>>(Configuration.GetSection("SecurityKeys"));
-            services.Configure<Dictionary<string, List<string>>>(Configuration.GetSection("AllowedValues"));
+            //services.Configure<List<string>>(Configuration.GetSection("SecurityKeys"));
+            //services.Configure<Dictionary<string, List<string>>>(Configuration.GetSection("AllowedValues"));
+
+            services.Configure<ApiOptions>(Configuration.GetSection("ApiOptions"));
 
             //security
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -62,7 +65,7 @@ namespace HousingOffersAPI
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(Configuration["SecurityKeys:0"]))
+                        Encoding.UTF8.GetBytes(Configuration["ApiOptions:UsersControllerOptions:SecurityKeys:JWT"]))
                 };
             });
         }

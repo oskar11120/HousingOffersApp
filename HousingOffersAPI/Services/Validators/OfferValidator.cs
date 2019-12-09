@@ -1,4 +1,5 @@
 ﻿using HousingOffersAPI.Models;
+using HousingOffersAPI.Options;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -9,13 +10,15 @@ namespace HousingOffersAPI.Services.Validators
 {
     public class OfferValidator : IOfferValidator
     {
-        public OfferValidator(IOptions<Dictionary<string, List<string>>> options)
+        public OfferValidator(IOptions<ApiOptions> options, IOffersRepozitory offersRepozitory)
         {
-            this.allowedOfferTypes = options.Value["OfferTypes"];
-            this.allowedProperyTypes = options.Value["PropertyTypes"];
+            this.allowedOfferTypes = options.Value.OffersControllerOptions.AllowedValues["OfferTypes"];
+            this.allowedProperyTypes = options.Value.OffersControllerOptions.AllowedValues["PropertyTypes"];
+            this.offersRepozitory = offersRepozitory;
         }
         private readonly IEnumerable<string> allowedProperyTypes;
         private readonly IEnumerable<string> allowedOfferTypes;
+        private readonly IOffersRepozitory offersRepozitory;
 
         private readonly int descLengthLimit = 1000;
 
@@ -35,6 +38,7 @@ namespace HousingOffersAPI.Services.Validators
                 return "invalid offer area!";
             if (offer.Description.Count() > descLengthLimit)
                 return "description too long!";
+            //if()  todo limit amount of offers for user
             return null;
         }
     }
