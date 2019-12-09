@@ -69,6 +69,10 @@ namespace HousingOffersAPI.Services
                 query = query.Where(offer => offer.CreationDate >= offersRequestContentModel.DateTimeLimits[0]
                 && offer.CreationDate <= offersRequestContentModel.DateTimeLimits[1]);
             }
+            if(offersRequestContentModel.UserLogin != null)
+            {
+                query = query.Where(offer => offer.User.Login == offersRequestContentModel.UserLogin);
+            }
 
             //including objects nested in offers
             query = query

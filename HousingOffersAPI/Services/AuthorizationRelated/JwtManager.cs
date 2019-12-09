@@ -57,7 +57,7 @@ namespace HousingOffersAPI.Services.Validators
             });
             if (listWithNeededOffer.Count() == 0) return false;
 
-            return IsClaimValidToRequestedUserId(listWithNeededOffer.ToList()[0].UserId, claims);
+            return IsClaimValidToRequestedUserId(listWithNeededOffer.First().UserId, claims);
         }
     }
 }

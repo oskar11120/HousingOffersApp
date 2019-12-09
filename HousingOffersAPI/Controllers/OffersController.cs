@@ -91,6 +91,8 @@ namespace HousingOffersAPI.Controllers
         [HttpPatch("update")]
         public IActionResult UpdateOffer([FromBody] OfferModel offer)
         {
+
+
             if (!jwtManager.IsClaimValidToRequestedOfferId(offer.Id, User.Claims.ToArray()))
                 return Unauthorized();
 

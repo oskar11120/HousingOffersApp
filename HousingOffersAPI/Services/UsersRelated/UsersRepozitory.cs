@@ -40,7 +40,6 @@ namespace HousingOffersAPI.Services.UsersRelated
                 neededUser.Password = null;
             return neededUser;
         }
-
         public void DeleteUser(int userId)
         {
             var userToDelete = context.Users.SingleOrDefault(user => user.Id == userId);
@@ -50,7 +49,6 @@ namespace HousingOffersAPI.Services.UsersRelated
                 context.SaveChanges();
             }
         }
-
         public void UpdateUser(UserModel user, int userId)
         {
             var userToUpdate = context.Users.SingleOrDefault(userEntity => userEntity.Id == userId);
@@ -63,5 +61,15 @@ namespace HousingOffersAPI.Services.UsersRelated
 
             context.SaveChanges();
         }
+
+        public bool DoesUserWithMailExist(string email)
+        {
+            return context.Users.Any(user => user.Email == email);
+        }
+        public bool DoesUserWithLoginExist(string login)
+        {
+            return context.Users.Any(user => user.Login == login);
+        }
+
     }
 }

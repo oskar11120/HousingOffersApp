@@ -10,5 +10,9 @@ namespace HousingOffersAPI.Services.UsersRelated
         void AddUser(UserModel user);
         void DeleteUser(int userId);
         void UpdateUser(UserModel user, int userId);
+
+        bool DoesUserWithMailExist(string email);
+        bool DoesUserWithLoginExist(string email);
+
     }
 }
