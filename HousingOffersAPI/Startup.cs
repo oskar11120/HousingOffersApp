@@ -21,6 +21,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using HousingOffersAPI.Services.Validators;
 using HousingOffersAPI.Options;
+using HousingOffersAPI.Services.AnalyticsRelated;
 
 namespace HousingOffersAPI
 {
@@ -36,12 +37,20 @@ namespace HousingOffersAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddDbContext<HousingOffersContext>(o => o.UseSqlServer(Configuration["ApiOptions:ConnectionStrings:HousingOffersDB"]));
 
             services.AddScoped<IOffersRepozitory, OffersRepozitory>();
             services.AddScoped<IUsersRepozitory, UsersRepozitory>();
+            services.AddScoped<IAnalyticsDataRepozitory, AnalyticsDataRepozitory>();
 
             services.AddScoped<IJwtManager, JwtManager>();
 
@@ -81,6 +90,8 @@ namespace HousingOffersAPI
             {
                 app.UseHsts();
             }
+
+            app.UseCors("MyPolicy");
 
             app.UseAuthentication();
 
