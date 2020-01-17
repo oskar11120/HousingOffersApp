@@ -22,6 +22,9 @@ using System.Text;
 using HousingOffersAPI.Services.Validators;
 using HousingOffersAPI.Options;
 using HousingOffersAPI.Services.AnalyticsRelated;
+using HousingOffersAPI.Services.TaskRelated;
+using HousingOffersAPI.Services.ScriptRelated;
+using HousingOffersAPI.Services.RecommendationRelated;
 
 namespace HousingOffersAPI
 {
@@ -51,12 +54,14 @@ namespace HousingOffersAPI
             services.AddScoped<IOffersRepozitory, OffersRepozitory>();
             services.AddScoped<IUsersRepozitory, UsersRepozitory>();
             services.AddScoped<IAnalyticsDataRepozitory, AnalyticsDataRepozitory>();
+            services.AddScoped<IRecommendationRepository, RecommendationRepository>();
 
             services.AddScoped<IJwtManager, JwtManager>();
 
             services.AddScoped<IUserValidator, UserValidator>();
             services.AddScoped<IOfferValidator, OfferValidator>();
             services.AddScoped<IOfferGetRequestValidator, OfferGetRequestValidator>();
+            
 
             //services.Configure<List<string>>(Configuration.GetSection("SecurityKeys"));
             //services.Configure<Dictionary<string, List<string>>>(Configuration.GetSection("AllowedValues"));
@@ -113,6 +118,16 @@ namespace HousingOffersAPI
             });
 
             app.UseMvc();
+
+            //ScriptTaskScheduler.Schedule(
+            //    () => RScriptRunner.Run(Configuration["ApiOptions:RecomendationOptions:RecomendationScriptPath"]),
+            //    new TimeSpan(0, 0, 5)
+            //    );
+
+            ScriptTaskScheduler.Schedule(
+                () => { },
+                new TimeSpan(0, 0, 5)
+                );
         }
     }
 }

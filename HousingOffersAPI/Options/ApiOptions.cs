@@ -10,6 +10,7 @@ namespace HousingOffersAPI.Options
         public Dictionary<string, string> ConnectionStrings { get; set; }
         public UsersControllerOptions UsersControllerOptions {get; set;}
         public OffersControllerOptions OffersControllerOptions { get; set; }
+        public RecomendationOptions RecomendationOptions { get; set; }
     }
 
     public class UsersControllerOptions
@@ -19,5 +20,10 @@ namespace HousingOffersAPI.Options
     public class OffersControllerOptions
     {
         public Dictionary<string, List<string>> AllowedValues {get; set;}
+    }
+    public class RecomendationOptions
+    {
+        public string RecomendationScriptPath { get; set; }
+        public string RecomendationFilePath { get; set; }
     }
 }
