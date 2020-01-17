@@ -33,7 +33,6 @@ namespace HousingOffersAPI.Services
 
         public List<Offer> GetOffers(OffersRequestContentModel offersRequestContentModel)
         {
-            //TODO handle querying for location
             var query = context.Offers.Where(offer => true);
 
             if(offersRequestContentModel.OfferId != null)

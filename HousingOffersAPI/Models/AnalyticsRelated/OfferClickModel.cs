@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HousingOffersAPI.Models.AnalyticsRelated
 {
-    public class UserContactRequestAnalyticsModel
+    public class OfferClickModel
     {
         public int OfferId { get; set; }
         public DateTime DateTime { get; set; }

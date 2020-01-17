@@ -13,12 +13,12 @@ namespace HousingOffersAPI.Services.AnalyticsRelated
 
         }
 
-        public void AddContactRequest(UserContactRequestAnalyticsModel userContanctRequestAnalyticsModel)
+        public void AddContactRequest(UserClickModel userContanctRequestAnalyticsModel)
         {
 
         }
 
-        public void AddOfferRequest(UserOfferRequestAnalyticsModel userOfferRequestAnalyticsModel)
+        public void AddOfferRequest(OfferClickModel userOfferRequestAnalyticsModel)
         {
 
         }

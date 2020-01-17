@@ -4,7 +4,7 @@ namespace HousingOffersAPI.Services.AnalyticsRelated
 {
     public interface IAnalyticsDataRepozitory
     {
-        void AddContactRequest(UserContactRequestAnalyticsModel userContanctRequestAnalyticsModel);
-        void AddOfferRequest(UserOfferRequestAnalyticsModel userOfferRequestAnalyticsModel);
+        void AddContactRequest(UserClickModel userContanctRequestAnalyticsModel);
+        void AddOfferRequest(OfferClickModel userOfferRequestAnalyticsModel);
     }
 }

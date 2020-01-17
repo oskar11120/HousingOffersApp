@@ -20,7 +20,7 @@ namespace HousingOffersAPI.Controllers
         private readonly IAnalyticsDataRepozitory analyticsDataRepozitory;
 
         [HttpPost("offerOpened")]
-        public IActionResult OfferWasOpened(UserOfferRequestAnalyticsModel userOpenedOfferAnalyticsModel)
+        public IActionResult OfferWasOpened(OfferClickModel userOpenedOfferAnalyticsModel)
         {
             analyticsDataRepozitory.AddOfferRequest(userOpenedOfferAnalyticsModel);
             return Ok();
@@ -28,7 +28,7 @@ namespace HousingOffersAPI.Controllers
 
 
         [HttpPost("offerOpened")]
-        public IActionResult UserContactWasRequested(UserContactRequestAnalyticsModel userOpenContactAnalyticsModel)
+        public IActionResult UserContactWasRequested(UserClickModel userOpenContactAnalyticsModel)
         {
             analyticsDataRepozitory.AddContactRequest(userOpenContactAnalyticsModel);
             return Ok();
