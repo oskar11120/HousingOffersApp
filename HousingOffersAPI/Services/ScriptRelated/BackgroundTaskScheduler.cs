@@ -8,17 +8,16 @@ using System.Threading.Tasks;
 
 namespace HousingOffersAPI.Services.TaskRelated
 {
-    public static class ScriptTaskScheduler 
-    {
-        public static async Task Schedule(Action task, TimeSpan delay)
+    public class BackgroundTaskScheduler : IBackgroundTaskScheduler
+    { 
+        public async Task Schedule(Action task, TimeSpan delay)
         {
             await Task.Delay(delay);
             await Task.Run(task);
 
             Schedule(task, delay);
         }
-
-        public static async Task Schedule(Task task, TimeSpan delay)
+        public async Task Schedule(Task task, TimeSpan delay)
         {
             await Task.Delay(delay);
             task.Start();

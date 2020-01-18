@@ -10,6 +10,15 @@ namespace HousingOffersAPI.Entities
 {
     public class HousingOffersContext : DbContext
     {
+        private static DbContextOptions GetOptions(string connectionString)
+        {
+            return SqlServerDbContextOptionsExtensions.UseSqlServer(new DbContextOptionsBuilder(), connectionString).Options;
+        }
+
+        public HousingOffersContext(string connectionString) : base(GetOptions(connectionString))
+        {
+        }
+
         public HousingOffersContext(DbContextOptions<HousingOffersContext> options)
             : base(options)
         {

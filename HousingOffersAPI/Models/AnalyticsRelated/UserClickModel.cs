@@ -8,8 +8,7 @@ namespace HousingOffersAPI.Models.AnalyticsRelated
 {
     public class UserClickModel
     {
-        public int OfferId { get; set; }
+        public int UserId { get; set; }
         public DateTime DateTime { get; set; }
-        public LocationModel Location { get; set; } 
     }
 }

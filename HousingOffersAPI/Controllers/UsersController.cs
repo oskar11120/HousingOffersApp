@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using HousingOffersAPI.Models;
+using HousingOffersAPI.Services.ClicksRelated;
 using HousingOffersAPI.Services.UsersRelated;
 using HousingOffersAPI.Services.Validators;
 using HousingOffersAPI.Validators;
@@ -21,23 +22,24 @@ namespace HousingOffersAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        public UsersController(IUserValidator userValidator, IUsersRepozitory repozitory, IJwtManager jwtManager)
+        public UsersController(IUserValidator userValidator, IUsersRepozitory usersRepozitory, IJwtManager jwtManager, IClicksRepository clicksRepository)
         {
             this.userValidator = userValidator;
-            this.repozitory = repozitory;
+            this.usersRepozitory = usersRepozitory;
             this.jwtManager = jwtManager;
         }
 
         private readonly IUserValidator userValidator;
-        private readonly IUsersRepozitory repozitory;
+        private readonly IUsersRepozitory usersRepozitory;
         private readonly IJwtManager jwtManager;
+        private readonly IClicksRepository clicksRepository;
 
         [AllowAnonymous]
         [HttpPost("login")]
         public IActionResult Login([FromBody] UserModel user)
         {
             ///add here validiation and sanitization
-            var neededUserId = repozitory.GetUserID(user);
+            var neededUserId = usersRepozitory.GetUserID(user);
             if (neededUserId != null)
             {
                 return Ok(new
@@ -56,7 +58,7 @@ namespace HousingOffersAPI.Controllers
             if (error != null)
                 return BadRequest(error);
 
-                repozitory.AddUser(user);
+                usersRepozitory.AddUser(user);
                 return Ok();
         }
 
@@ -64,13 +66,14 @@ namespace HousingOffersAPI.Controllers
         [HttpGet("{userId}")]
         public IActionResult Get(int userId)
         {
-            var outputUser = repozitory.GetUser(userId);
+            var outputUser = usersRepozitory.GetUser(userId);
             if (outputUser == null)
             {
                 return BadRequest("User does not exist!");
             }              
             else
             {
+                clicksRepository.AddUserClick(userId);
                 return Ok(AutoMapper.Mapper.Map<Entities.User, Models.UserModel>(outputUser));
             }             
         }
@@ -82,7 +85,7 @@ namespace HousingOffersAPI.Controllers
 
             int userId = jwtManager.GetClaimOfType(User.Claims.ToArray(), "UserId");
 
-            repozitory.UpdateUser(new UserModel()
+            usersRepozitory.UpdateUser(new UserModel()
             {
                 Login = userUpdateContent.Login,
                 Password = userUpdateContent.Password,
@@ -96,7 +99,7 @@ namespace HousingOffersAPI.Controllers
         {
             //TODO add request validation
             int userId = jwtManager.GetClaimOfType(User.Claims.ToArray(), "UserId");
-            repozitory.DeleteUser(userId);
+            usersRepozitory.DeleteUser(userId);
             return Ok();
         }
     }

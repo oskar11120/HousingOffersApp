@@ -10,6 +10,5 @@ namespace HousingOffersAPI.Models.AnalyticsRelated
     {
         public int OfferId { get; set; }
         public DateTime DateTime { get; set; }
-        public LocationModel Location { get; set; } 
     }
 }

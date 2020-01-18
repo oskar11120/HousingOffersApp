@@ -1,8 +1,10 @@
 ﻿using HousingOffersAPI.Options;
 using HousingOffersAPI.Services.ScriptRelated;
 using HousingOffersAPI.Services.TaskRelated;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -10,10 +12,10 @@ namespace HousingOffersAPI.Services.RecommendationRelated
 {    
     public class RecommendationRepository : IRecommendationRepository
     {
-        public RecommendationRepository(ApiOptions options, IOffersRepozitory offersRepozitory)
-        {            
-            update();
-            this.options = options.RecomendationOptions;
+        public RecommendationRepository(IOptions<ApiOptions> options, IOffersRepozitory offersRepozitory)
+        {
+            this.options = options.Value.RecomendationOptions;
+            update();            
         }
 
         private readonly RecomendationOptions options;
@@ -43,7 +45,9 @@ namespace HousingOffersAPI.Services.RecommendationRelated
                 .ToList();
             lines.ForEach(line =>
             {
-                recommendations.Add(new Tuple<int, double>(int.Parse(line[0]), double.Parse(line[1])));
+                recommendations.Add(new Tuple<int, double>(
+                    int.Parse(line[0]),
+                    double.Parse(line[1], CultureInfo.InvariantCulture)));
             });
         }
         

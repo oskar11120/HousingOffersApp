@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using HousingOffersAPI.Entities;
 using HousingOffersAPI.Models;
+using HousingOffersAPI.Models.AnalyticsRelated;
 using HousingOffersAPI.Models.DatabaseRelated;
 using HousingOffersAPI.Services;
+using HousingOffersAPI.Services.ClicksRelated;
 using HousingOffersAPI.Services.UsersRelated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,14 +18,16 @@ namespace HousingOffersAPI.Controllers
     [ApiController]
     public class DummyController : ControllerBase
     {
-        public DummyController(IOffersRepozitory offersRepozitory, IUsersRepozitory usersRepozitory )
+        public DummyController(IOffersRepozitory offersRepozitory, IUsersRepozitory usersRepozitory, IClicksRepository clicksRepository)
         {
             this.usersRepozitory = usersRepozitory;
             this.offersRepozitory = offersRepozitory;
+            this.clicksRepository = clicksRepository;
         }
 
         private readonly IOffersRepozitory offersRepozitory;
         private readonly IUsersRepozitory usersRepozitory;
+        private readonly IClicksRepository clicksRepository;
 
         [HttpGet("initdatabase")]
         public IActionResult InitializeDatabase()
@@ -57,8 +61,9 @@ namespace HousingOffersAPI.Controllers
             };
             userModels.ForEach(user => usersRepozitory.AddUser(user));
 
+
             List<int> userIds = userModels.Select(user => (int)usersRepozitory.GetUserID(user)).ToList();
-            List<OfferModel> offerModels = new List<OfferModel>()
+            var offerModels = new List<OfferModel>()
             {
                 new OfferModel()
                 {
@@ -179,8 +184,19 @@ namespace HousingOffersAPI.Controllers
                 }
             };
             offerModels.ForEach(offer => offersRepozitory.AddOffer(offer));
-                       
-            return Ok();
+
+            List<int> offerIds = offersRepozitory.GetOffers(new OffersRequestContentModel()).Select(offer => offer.Id)
+                .ToList();
+            var rng = new Random(1000);
+
+
+            for (int i = 0; i < 2; i++)
+            {
+                offerIds.ForEach(offerId => clicksRepository.AddOfferClick(offerId));
+                userIds.ForEach(userId => clicksRepository.AddUserClick(userId));
+            }
+
+            return Ok("database reset");
         }
 
         [HttpGet("resetdatabase")]

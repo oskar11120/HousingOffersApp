@@ -17,8 +17,8 @@ namespace HousingOffersAPI.Models.AnalyticsRelated
 
         public DateTime DateTime { get; set; }
 
-        [ForeignKey("OfferId")]
-        public Offer Offer { get; set; }
-        public int OfferId { get; set; }
+        [ForeignKey("UserId")]
+        public Offer User { get; set; }
+        public int UserId { get; set; }
     }
 }

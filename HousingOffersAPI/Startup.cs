@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using HousingOffersAPI.Entities;
 using HousingOffersAPI.Services;
 using HousingOffersAPI.Services.UsersRelated;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using AutoMapper;
 using HousingOffersAPI.Validators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -25,6 +18,8 @@ using HousingOffersAPI.Services.AnalyticsRelated;
 using HousingOffersAPI.Services.TaskRelated;
 using HousingOffersAPI.Services.ScriptRelated;
 using HousingOffersAPI.Services.RecommendationRelated;
+using HousingOffersAPI.Models.AnalyticsRelated;
+using HousingOffersAPI.Services.ClicksRelated;
 
 namespace HousingOffersAPI
 {
@@ -55,18 +50,18 @@ namespace HousingOffersAPI
             services.AddScoped<IUsersRepozitory, UsersRepozitory>();
             services.AddScoped<IAnalyticsDataRepozitory, AnalyticsDataRepozitory>();
             services.AddScoped<IRecommendationRepository, RecommendationRepository>();
+            services.AddScoped<IClicksRepository, ClicksRepository>();
 
             services.AddScoped<IJwtManager, JwtManager>();
 
             services.AddScoped<IUserValidator, UserValidator>();
             services.AddScoped<IOfferValidator, OfferValidator>();
-            services.AddScoped<IOfferGetRequestValidator, OfferGetRequestValidator>();
-            
-
-            //services.Configure<List<string>>(Configuration.GetSection("SecurityKeys"));
-            //services.Configure<Dictionary<string, List<string>>>(Configuration.GetSection("AllowedValues"));
+            services.AddScoped<IOfferGetRequestValidator, OfferGetRequestValidator>();          
 
             services.Configure<ApiOptions>(Configuration.GetSection("ApiOptions"));
+
+            services.AddSingleton<IBackgroundTaskScheduler, BackgroundTaskScheduler>();
+            services.AddSingleton<IRScriptTasksRunner>(service => new RScriptTasksRunner(Configuration["ApiOptions:ConnectionStrings:HousingOffersDB"]));
 
             //security
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -85,7 +80,7 @@ namespace HousingOffersAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IBackgroundTaskScheduler backgroundTaskScheduler, IRScriptTasksRunner rScriptTasksRunner)
         {
             if (env.IsDevelopment())
             {
@@ -109,25 +104,31 @@ namespace HousingOffersAPI
                 cfg.CreateMap<Entities.ImageAdress, Models.ImageAdressModel>();
                 cfg.CreateMap<Entities.OfferTag, Models.OfferTagModel>();
                 cfg.CreateMap<Entities.Location, Models.DatabaseRelated.LocationModel>();
+                cfg.CreateMap<UserClick, UserClickModel>();
+                cfg.CreateMap<OfferClick, OfferClickModel>();
 
                 cfg.CreateMap<Models.OfferModel, Entities.Offer>();
                 cfg.CreateMap<Models.UserModel, Entities.User>();
                 cfg.CreateMap<Models.ImageAdressModel, Entities.ImageAdress>();
                 cfg.CreateMap<Models.OfferTagModel, Entities.OfferTag>();
                 cfg.CreateMap<Models.DatabaseRelated.LocationModel, Entities.Location>();
+                cfg.CreateMap<UserClickModel, UserClick>();
+                cfg.CreateMap<OfferClickModel, OfferClick>();
+
             });
 
             app.UseMvc();
 
-            //ScriptTaskScheduler.Schedule(
-            //    () => RScriptRunner.Run(Configuration["ApiOptions:RecomendationOptions:RecomendationScriptPath"]),
-            //    new TimeSpan(0, 0, 5)
-            //    );
-
-            ScriptTaskScheduler.Schedule(
-                () => { },
-                new TimeSpan(0, 0, 5)
+            backgroundTaskScheduler.Schedule(
+                () => rScriptTasksRunner.UpdateScriptCsvs(),
+                new TimeSpan(0, 0, 15)
                 );
+
+            backgroundTaskScheduler.Schedule(
+                () => rScriptTasksRunner.RunRScript(Configuration["ApiOptions:RecomendationOptions:RecomendationScriptPath"]),
+                new TimeSpan(0, 2, 0)
+                );
+
         }
     }
 }
