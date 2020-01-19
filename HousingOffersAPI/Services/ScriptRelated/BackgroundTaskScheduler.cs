@@ -1,6 +1,4 @@
-﻿using ASquare.WindowsTaskScheduler;
-using ASquare.WindowsTaskScheduler.Models;
-using HousingOffersAPI.Options;
+﻿using HousingOffersAPI.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;

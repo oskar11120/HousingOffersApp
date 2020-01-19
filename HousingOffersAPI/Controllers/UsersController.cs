@@ -27,6 +27,7 @@ namespace HousingOffersAPI.Controllers
             this.userValidator = userValidator;
             this.usersRepozitory = usersRepozitory;
             this.jwtManager = jwtManager;
+            this.clicksRepository = clicksRepository;
         }
 
         private readonly IUserValidator userValidator;

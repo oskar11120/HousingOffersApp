@@ -121,12 +121,12 @@ namespace HousingOffersAPI
 
             backgroundTaskScheduler.Schedule(
                 () => rScriptTasksRunner.UpdateScriptCsvs(),
-                new TimeSpan(0, 0, 15)
+                new TimeSpan(0, 5, 0)
                 );
 
             backgroundTaskScheduler.Schedule(
                 () => rScriptTasksRunner.RunRScript(Configuration["ApiOptions:RecomendationOptions:RecomendationScriptPath"]),
-                new TimeSpan(0, 2, 0)
+                new TimeSpan(0, 5, 15)
                 );
 
         }

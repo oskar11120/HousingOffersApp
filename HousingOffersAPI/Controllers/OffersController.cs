@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HousingOffersAPI.Models;
 using HousingOffersAPI.Services;
+using HousingOffersAPI.Services.ClicksRelated;
 using HousingOffersAPI.Services.RecommendationRelated;
 using HousingOffersAPI.Services.Validators;
 using Microsoft.AspNetCore.Authorization;
@@ -12,17 +13,18 @@ using Microsoft.AspNetCore.Mvc;
 namespace HousingOffersAPI.Controllers
 {
     [Authorize]
-    [Route("api/offers/")]
+    [Route("api/offers")]
     [ApiController]
     public class OffersController : ControllerBase
     {
-        public OffersController(IOffersRepozitory repozitory, IJwtManager jwtManager, IOfferValidator offerValidator, IOfferGetRequestValidator offerGetRequestValidator, IRecommendationRepository recommendationRepository)
+        public OffersController(IOffersRepozitory repozitory, IJwtManager jwtManager, IOfferValidator offerValidator, IOfferGetRequestValidator offerGetRequestValidator, IRecommendationRepository recommendationRepository, IClicksRepository clicksRepository)
         {
             this.offersRepozitory = repozitory;
             this.jwtManager = jwtManager;
             this.offerValidator = offerValidator;
             this.offerGetRequestValidator = offerGetRequestValidator;
             this.recommendationRepository = recommendationRepository;
+            this.clicksRepository = clicksRepository;
         }
 
         private readonly IOffersRepozitory offersRepozitory;
@@ -30,6 +32,7 @@ namespace HousingOffersAPI.Controllers
         private readonly IOfferValidator offerValidator;
         private readonly IOfferGetRequestValidator offerGetRequestValidator;
         private readonly IRecommendationRepository recommendationRepository;
+        private readonly IClicksRepository clicksRepository;
 
         // returns offers for given getOffersInput
         [AllowAnonymous]
@@ -40,8 +43,11 @@ namespace HousingOffersAPI.Controllers
             if (outputOffer == null)
                 return BadRequest("No such offer!");
             else
+            {
+                clicksRepository.AddOfferClick(offerId);
                 outputOffer.User.Password = "";
-
+            }
+                
             return Ok(AutoMapper.Mapper.Map<Entities.Offer, Models.OfferModel>(outputOffer));
         }
 
@@ -63,7 +69,7 @@ namespace HousingOffersAPI.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("get")]
+        [HttpPost]
         public IActionResult GetOffers([FromBody] OffersRequestContentModel requestContentModel)
         {
             var error = offerGetRequestValidator.IsRequestValid(requestContentModel);
