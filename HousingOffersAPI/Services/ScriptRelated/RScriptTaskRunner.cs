@@ -48,13 +48,13 @@ namespace HousingOffersAPI.Services.ScriptRelated
                 string.Join(Environment.NewLine, clicksRepository.GetOfferClicks()
                 .Select(row => $"{row.OfferId};{row.DateTime}")));
 
-            File.WriteAllTextAsync
+            File.WriteAllText
                 ("userClicks.csv",
                 $"id; datetime{Environment.NewLine}" + 
                 string.Join(Environment.NewLine, clicksRepository.GetUserClicks()
                 .Select(row => $"{row.UserId};{row.DateTime}")));
 
-            File.WriteAllTextAsync
+            File.WriteAllText
                 ("offers.csv",
                 $"id; location.x; location.y; priceinpln; userid; propertytype; area; creationdate; description{Environment.NewLine}" +
                 string.Join(Environment.NewLine, offersRepository.GetOffers(new Models.OffersRequestContentModel())
@@ -62,6 +62,29 @@ namespace HousingOffersAPI.Services.ScriptRelated
                 {
                     return $"{ row.Id };{ row.Location.Longitude };{ row.Location.Lattitue };{ row.PriceInPLN };{ row.UserId };{ row.PropertyType };{row.Area};{row.CreationDate};{row.Description}";
                 })));
+
+
+            //TODO change script to use files above and remove the linq from below
+            string dataIe = "Id; Price; Adress; Area; PropertyType; OfferType; Description; CreationDate; User; Views; Clicks" + Environment.NewLine;
+
+            var lines = context.Offers.Select(offer => offer)
+                .ToList().Select(offer => {
+                    int id = offer.Id;
+
+                    int offerClicks = context
+                        .OfferClicks
+                        .Where(offerClick => offerClick.Id == offer.Id).Count();
+
+                    int userClicks = context
+                        .UserClicks
+                        .Where(userClick => userClick.Id == offer.Id).Count();
+
+                    return $"{id};{offer.PriceInPLN};{offer.Location.Longitude}, {offer.Location.Lattitue};{offer.Area};{offer.PropertyType};{offer.Description};{offer.CreationDate};{offer.User.Id};{offerClicks};{userClicks}{Environment.NewLine}";
+                });
+
+            dataIe += string.Join("", lines);
+            File.WriteAllText("dataIE.csv", dataIe);
+            
 
             Console.WriteLine($"{DateTime.Now}: Done exporting data to csvs");
         }
