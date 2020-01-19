@@ -44,23 +44,23 @@ namespace HousingOffersAPI.Services.ScriptRelated
             List<Task> tasks = new List<Task>();
             File.WriteAllText
                 ("offerClicks.csv",
-                $"id, datetime{Environment.NewLine}" +
+                $"id; datetime{Environment.NewLine}" +
                 string.Join(Environment.NewLine, clicksRepository.GetOfferClicks()
-                .Select(row => $"{row.OfferId},{row.DateTime}")));
+                .Select(row => $"{row.OfferId};{row.DateTime}")));
 
             File.WriteAllTextAsync
                 ("userClicks.csv",
-                $"id, datetime{Environment.NewLine}" + 
+                $"id; datetime{Environment.NewLine}" + 
                 string.Join(Environment.NewLine, clicksRepository.GetUserClicks()
-                .Select(row => $"{row.UserId},{row.DateTime}")));
+                .Select(row => $"{row.UserId};{row.DateTime}")));
 
             File.WriteAllTextAsync
                 ("offers.csv",
-                $"id, location.x, location.y, priceinpln, userid, propertytype, area, creationdate, description{Environment.NewLine}" +
+                $"id; location.x; location.y; priceinpln; userid; propertytype; area; creationdate; description{Environment.NewLine}" +
                 string.Join(Environment.NewLine, offersRepository.GetOffers(new Models.OffersRequestContentModel())
                 .Select(row =>
                 {
-                    return $"{ row.Id },{ row.Location.Longitude },{ row.Location.Lattitue },{ row.PriceInPLN },{ row.UserId },{ row.PropertyType },{row.Area},{row.CreationDate},{row.Description}";
+                    return $"{ row.Id };{ row.Location.Longitude };{ row.Location.Lattitue };{ row.PriceInPLN };{ row.UserId };{ row.PropertyType };{row.Area};{row.CreationDate};{row.Description}";
                 })));
 
             Console.WriteLine($"{DateTime.Now}: Done exporting data to csvs");
