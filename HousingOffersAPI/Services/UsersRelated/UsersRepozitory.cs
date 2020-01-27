@@ -36,9 +36,16 @@ namespace HousingOffersAPI.Services.UsersRelated
         public User GetUser(int userId)
         {
             var neededUser = context.Users.SingleOrDefault(user => user.Id == userId);
-            if(neededUser != null)
-                neededUser.Password = null;
-            return neededUser;
+
+            var outUser = neededUser == null ? null : new User()
+            {
+                Email = neededUser.Email,
+                Id = neededUser.Id,
+                Login = neededUser.Login,
+                Offers = neededUser.Offers,
+                PhoneNumber = neededUser.PhoneNumber
+            };
+            return outUser;
         }
         public void DeleteUser(int userId)
         {

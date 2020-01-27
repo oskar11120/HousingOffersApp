@@ -1,4 +1,4 @@
 id; location.x; location.y; priceinpln; userid; propertytype; area; creationdate; description
-1;10;5;10000;1;mieszkanie;50;17.01.2020 23:30:26;asdasdasdasdasd
-2;10;7;99999999,99;2;działka zabudowana;100,5;17.01.2020 23:30:26;desc for user 2
-3;5;5;100;3;działka;10;17.01.2020 23:30:26;zxzzzxczxczxc
+4;10;5;10000;4;mieszkanie;50;27.01.2020 12:02:55;asdasdasdasdasd
+5;10;7;99999999,99;5;działka zabudowana;100,5;27.01.2020 12:02:55;desc for user 2
+6;5;5;100;6;działka;10;27.01.2020 12:02:55;zxzzzxczxczxc
