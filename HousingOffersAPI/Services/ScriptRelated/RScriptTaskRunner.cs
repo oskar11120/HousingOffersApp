@@ -79,7 +79,7 @@ namespace HousingOffersAPI.Services.ScriptRelated
                         .UserClicks
                         .Where(userClick => userClick.Id == offer.Id).Count();
 
-                    return $"{id};{offer.PriceInPLN};{offer.Location.Longitude}, {offer.Location.Lattitue};{offer.Area};{offer.PropertyType};{offer.Description};{offer.CreationDate};{offer.User.Id};{offerClicks};{userClicks}{Environment.NewLine}";
+                    return $"{id};{offer.PriceInPLN};{offer.Location.Description};{offer.Area};{offer.PropertyType};{offer.OfferType};{offer.Description};{offer.CreationDate};{offer.User.Id};{offerClicks};{userClicks}{Environment.NewLine}";
                 });
 
             dataIe += string.Join("", lines);

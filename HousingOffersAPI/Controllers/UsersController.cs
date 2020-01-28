@@ -45,7 +45,8 @@ namespace HousingOffersAPI.Controllers
             {
                 return Ok(new
                 {
-                    token = new JwtSecurityTokenHandler().WriteToken(jwtManager.CreateJWT((int)neededUserId))
+                    token = new JwtSecurityTokenHandler().WriteToken(jwtManager.CreateJWT((int)neededUserId)),
+                    userId = neededUserId
                 });
             }
             return BadRequest("Could not verify username and password");

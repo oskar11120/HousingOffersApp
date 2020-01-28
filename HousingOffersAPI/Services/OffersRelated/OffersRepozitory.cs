@@ -24,6 +24,7 @@ namespace HousingOffersAPI.Services
                 .Include(offer => offer.Images)
                 .Include(offer => offer.OfferTags)
                 .Include(offer => offer.User)
+                .Include(offer => offer.Location)
                 .ToList();
             if (listWithNeededOffer.Count == 0)
                 return null;
