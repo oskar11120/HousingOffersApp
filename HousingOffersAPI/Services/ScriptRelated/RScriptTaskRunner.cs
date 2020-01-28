@@ -28,9 +28,9 @@ namespace HousingOffersAPI.Services.ScriptRelated
 
             process.StartInfo = new ProcessStartInfo()
             {
-                FileName = "Rterm",
+                FileName = "rscript",
                 WindowStyle = ProcessWindowStyle.Hidden,
-                Arguments = scriptPath
+                Arguments = scriptPath             
             };
 
             process.Start();

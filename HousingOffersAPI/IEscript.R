@@ -1,6 +1,6 @@
 library(readxl)
 
-dataIE <- read.csv("~/AGH/dataIE.csv", row.names=1, sep=";")
+dataIE <- read.csv("dataIE.csv", row.names=1, sep=";")
 summary(dataIE)
 prze_il <- function(wektor){
   wynik = wektor/sqrt(sum(wektor^2))
@@ -52,4 +52,4 @@ for(i in 1:nrow(dataIE)){
 ranking
 colnames(ranking) = c("ID", "TS")
 ranking<-ranking[order(ranking[,2],ranking[,1],decreasing=TRUE),]
-write.csv(ranking, file = 'AGH/rank.csv', row.names = FALSE)
+write.csv(ranking, file = 'rank.csv', row.names = FALSE)

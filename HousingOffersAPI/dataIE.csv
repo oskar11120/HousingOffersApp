@@ -1,4 +1,4 @@
 Id; Price; Adress; Area; PropertyType; OfferType; Description; CreationDate; User; Views; Clicks
-10;10000;10, 5;50;mieszkanie;asdasdasdasdasd;27.01.2020 14:07:14;10;0;0
-11;99999999,99;10, 7;100,5;działka zabudowana;desc for user 2;27.01.2020 14:07:14;11;0;0
-12;100;5, 5;10;działka;zxzzzxczxczxc;27.01.2020 14:07:14;12;0;0
+10;10000;budryka 5 budapeszt;50;mieszkanie;wynajem;asdasdasdasdasd;27.01.2020 14:07:14;10;0;0
+11;99999999,99;adress for user 2;100,5;działka zabudowana;sprzedarz;desc for user 2;27.01.2020 14:07:14;11;0;0
+12;100;adress for user 3;10;działka;wynajem;zxzzzxczxczxc;27.01.2020 14:07:14;12;0;0
